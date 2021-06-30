@@ -1,15 +1,16 @@
-// CSS reset adapted from Piccalilli: https://piccalil.li/blog/a-modern-css-reset
-// Some resets adopted from Josh Comeau's CSS-for-JS course: https://courses.joshwcomeau.com/css-for-js
 import { createGlobalStyle } from 'styled-components';
 import { COLORS } from './constants';
 
 const GlobalStyle = createGlobalStyle`
   html, body, #root {
     height: 100%;
-    background: ${COLORS.tealPrimary};
+    background: ${COLORS.offWhite};
+    font-family: 'Poppins', sans-serif;
   }
 `;
 
+// CSS reset adapted from Piccalilli: https://piccalil.li/blog/a-modern-css-reset
+// Some resets adopted from Josh Comeau's CSS-for-JS course: https://courses.joshwcomeau.com/css-for-js
 const CSSReset = createGlobalStyle`
   /* Box sizing rules */
   *,
