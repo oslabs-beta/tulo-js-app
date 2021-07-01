@@ -2,9 +2,10 @@ import { createGlobalStyle } from 'styled-components';
 import { COLORS } from './constants';
 
 const GlobalStyle = createGlobalStyle`
-  html, body, #root {
+  html, body, #__next {
     height: 100%;
-    background: ${COLORS.offWhite};
+    background-color: ${COLORS.offWhite};
+    color: ${COLORS.darkGrey};
     font-family: 'Poppins', sans-serif;
   }
 `;
