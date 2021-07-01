@@ -28,7 +28,7 @@ const Signup = () => {
           <Image src={logo} alt='tulo.js logo' width='300' height='300' />
         </LogoContainer>
         <SignupContainer>
-          <SignupHeader>Welcome!</SignupHeader>
+          <Heading>Welcome!</Heading>
           <Spacer size={32} />
           <VisuallyHidden>
             <label htmlFor='email'>Email</label>
@@ -65,7 +65,7 @@ const Signup = () => {
   );
 };
 
-const SignupHeader = styled.h1`
+const Heading = styled.h1`
   font-size: 2rem;
 `;
 
@@ -95,9 +95,6 @@ const SignupContainer = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  @media (min-width: 576px) {
-  }
 
   @media (min-width: 768px) {
     width: 60%;
