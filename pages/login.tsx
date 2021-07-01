@@ -23,7 +23,7 @@ const Login = () => {
       </Head>
       <Wrapper>
         <LogoContainer>
-          <Image src={logo} alt='tulo.js logo' width='300' height='300' />
+          <Image src={logo} alt='tulo.js logo' width={300} height={121} />
         </LogoContainer>
         <SignupContainer>
           <Heading>Welcome back!</Heading>
