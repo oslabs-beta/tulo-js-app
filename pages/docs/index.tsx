@@ -1,20 +1,20 @@
 import Head from 'next/head';
 import styled from 'styled-components';
-import Layout from '../components/Layout';
+import Layout from '../../components/Layout';
 
-const Home = () => {
+const Docs = () => {
   return (
     <>
       <Head>
-        <title>Home | tulo.js</title>
+        <title>Documentation | tulo.js</title>
         <meta
           name='description'
-          content='Making service workers easy so that your app is fast and reliable, even offline.'
+          content='Documentation for tulojs npm package.'
         />
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Layout>
-        <Main>Main content</Main>
+        <Main>Docs</Main>
       </Layout>
     </>
   );
@@ -28,4 +28,4 @@ const Main = styled.main`
   font-size: 2rem;
 `;
 
-export default Home;
+export default Docs;
