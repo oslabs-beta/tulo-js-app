@@ -3,11 +3,16 @@ import styled from 'styled-components';
 import { COLORS } from '../styles/constants';
 
 type ButtonProps = {
+  onClick?: () => void;
   children: React.ReactNode;
 };
 
-const Button = ({ children }: ButtonProps) => {
-  return <PrimaryButton>{children}</PrimaryButton>;
+const Button = ({ onClick, children }: ButtonProps) => {
+  return onClick ? (
+    <PrimaryButton onClick={onClick}>{children}</PrimaryButton>
+  ) : (
+    <PrimaryButton>{children}</PrimaryButton>
+  );
 };
 
 const PrimaryButton = styled.button`
@@ -22,7 +27,7 @@ const PrimaryButton = styled.button`
   &:hover {
     cursor: pointer;
     box-shadow: none;
-    border: 2px solid ${COLORS.darkGrey};
+    border: 2px solid ${COLORS.orangePrimary};
     transition: border 0.5s ease;
   }
 

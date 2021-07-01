@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
+import { signIn, useSession } from 'next-auth/client';
 
 import logo from '../public/images/logo-offWhite.png';
 import githubLogo from '../public/images/github-logo.png';
@@ -13,8 +14,13 @@ import Spacer from '../components/Spacer';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import AnchorLink from '../components/AnchorLink';
+import React from 'react';
 
 const Login = () => {
+  // on component mount, check if a user session is established via next-auth
+  // TODO: if a session is established, redirect to dashboard
+  const [session, loading] = useSession();
+
   return (
     <>
       <Head>
@@ -26,9 +32,9 @@ const Login = () => {
           <Image src={logo} alt='tulo.js logo' width={300} height={121} />
         </LogoContainer>
         <SignupContainer>
-          <Heading>Welcome back!</Heading>
+          <Heading>Welcome!</Heading>
           <Spacer size={32} />
-          <VisuallyHidden>
+          {/* <VisuallyHidden>
             <label htmlFor='email'>Email</label>
           </VisuallyHidden>
           <Input name='email' type='email' placeholder='Email' />
@@ -41,8 +47,15 @@ const Login = () => {
           <Button>Login with email</Button>
           <Spacer size={12} />
           <Line />
-          <Spacer size={12} />
-          <Button>
+          <Spacer size={12} /> */}
+          {/* Docs for next-auth Client API signIn: https://next-auth.js.org/getting-started/client#signin */}
+          <Button
+            onClick={() =>
+              signIn('github', {
+                callbackUrl: 'http://localhost:3000/dashboard',
+              })
+            }
+          >
             <GitHubWrapper>
               <Image
                 src={githubLogo}
@@ -50,11 +63,12 @@ const Login = () => {
                 width={24}
                 height={24}
               />
-              &nbsp; Login with GitHub
+              &nbsp; Sign in with GitHub
             </GitHubWrapper>
           </Button>
-          <Spacer size={32} />
+          <Spacer size={20} />
           <Link href='/signup' passHref>
+            {/* TODO styled anchor tag doesn't have tabindex, but native a tag does */}
             <AnchorLink>Don&apos;t have an account? Sign up &rarr;</AnchorLink>
           </Link>
         </SignupContainer>
