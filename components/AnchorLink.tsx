@@ -8,7 +8,7 @@ const AnchorLink = ({ children }: { children: React.ReactNode }) => {
 
 const PrimaryLink = styled.a`
   text-decoration: none;
-  color: ${COLORS.tealPrimary};
+  color: ${COLORS.purplePrimary};
 
   &:hover {
     cursor: pointer;
