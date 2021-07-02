@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
 import { signIn, useSession } from 'next-auth/client';
@@ -7,18 +9,28 @@ import logo from '../public/images/logo-offWhite.png';
 import githubLogo from '../public/images/github-logo.png';
 import Spacer from '../components/Spacer';
 import Button from '../components/Button';
+import Loading from '../components/Loading';
 
 const SignIn = () => {
   // on component mount, check if a user session is established via next-auth
-  // TODO: if a session is established, redirect to dashboard
   const [session, loading] = useSession();
+  const router = useRouter();
 
+  // if a session is established, redirect to dashboard
+  useEffect(() => {
+    if (session) router.push('/dashboard');
+  }, [router, session]);
+
+  // sign in event handler invoked on button click
   const handleSignIn = () => {
     // Docs for next-auth Client API signIn: https://next-auth.js.org/getting-started/client#signin
     signIn('github', {
       callbackUrl: 'http://localhost:3000/dashboard',
     });
   };
+
+  // if a user session is loading, display the Loading component
+  if (loading) return <Loading />;
 
   return (
     <>
