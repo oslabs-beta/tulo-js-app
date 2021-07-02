@@ -8,7 +8,6 @@ import npmLogo from '../public/images/npm-logo.png';
 import styled from 'styled-components';
 import { COLORS } from '../styles/constants';
 import Spacer from './Spacer';
-import Loading from './Loading';
 
 const Header = () => {
   const [session, loading] = useSession();
@@ -21,8 +20,6 @@ const Header = () => {
   const handleSignOut = () => {
     signOut({ callbackUrl: 'http://localhost:3000/' });
   };
-
-  if (loading) return <Loading />;
 
   return (
     <Wrapper>
@@ -66,6 +63,9 @@ const Header = () => {
 };
 
 const Wrapper = styled.header`
+  position: sticky;
+  top: 0;
+  left: 0;
   padding: 0 24px;
   display: flex;
   justify-content: center;
