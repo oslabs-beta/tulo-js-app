@@ -8,6 +8,10 @@ const GlobalStyle = createGlobalStyle`
     color: ${COLORS.darkGrey};
     font-family: 'Poppins', sans-serif;
   }
+
+  h1 {
+    font-size: 2rem;
+  }
 `;
 
 // CSS reset adapted from Piccalilli: https://piccalil.li/blog/a-modern-css-reset

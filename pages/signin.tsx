@@ -1,50 +1,39 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import Image from 'next/image';
+import { signIn, useSession } from 'next-auth/client';
 import styled from 'styled-components';
-
+import { COLORS } from '../styles/constants';
 import logo from '../public/images/logo-offWhite.png';
 import githubLogo from '../public/images/github-logo.png';
-import { COLORS } from '../styles/constants';
-
-import VisuallyHidden from '../components/VisuallyHidden';
 import Spacer from '../components/Spacer';
 import Button from '../components/Button';
-import Input from '../components/Input';
-import AnchorLink from '../components/AnchorLink';
 
-const Signup = () => {
+const SignIn = () => {
+  // on component mount, check if a user session is established via next-auth
+  // TODO: if a session is established, redirect to dashboard
+  const [session, loading] = useSession();
+
+  const handleSignIn = () => {
+    // Docs for next-auth Client API signIn: https://next-auth.js.org/getting-started/client#signin
+    signIn('github', {
+      callbackUrl: 'http://localhost:3000/dashboard',
+    });
+  };
+
   return (
     <>
       <Head>
-        <title>Sign up | tulo.js</title>
-        <meta
-          name='description'
-          content='Sign up to monitor your service worker caching strategies on the tulo.js dashboard.'
-        />
+        <title>Sign in | tulo.js</title>
+        <meta name='description' content='Sign in to your tulo.js dashboard.' />
       </Head>
       <Wrapper>
         <LogoContainer>
           <Image src={logo} alt='tulo.js logo' width={300} height={121} />
         </LogoContainer>
         <SignupContainer>
-          <Heading>Welcome!</Heading>
+          <h1>Welcome!</h1>
           <Spacer size={32} />
-          <VisuallyHidden>
-            <label htmlFor='email'>Email</label>
-          </VisuallyHidden>
-          <Input name='email' type='email' placeholder='Email' />
-          <Spacer size={20} />
-          <VisuallyHidden>
-            <label htmlFor='password'>Password</label>
-          </VisuallyHidden>
-          <Input name='password' type='password' placeholder='Password' />
-          <Spacer size={20} />
-          <Button>Sign up with email</Button>
-          <Spacer size={12} />
-          <Line />
-          <Spacer size={12} />
-          <Button>
+          <Button onClick={handleSignIn}>
             <GitHubWrapper>
               <Image
                 src={githubLogo}
@@ -52,22 +41,14 @@ const Signup = () => {
                 width={24}
                 height={24}
               />
-              &nbsp; Sign up with GitHub
+              &nbsp; Sign in with GitHub
             </GitHubWrapper>
           </Button>
-          <Spacer size={32} />
-          <Link href='/login' passHref>
-            <AnchorLink>Already signed up? Login &rarr;</AnchorLink>
-          </Link>
         </SignupContainer>
       </Wrapper>
     </>
   );
 };
-
-const Heading = styled.h1`
-  font-size: 2rem;
-`;
 
 const Wrapper = styled.main`
   min-height: 100%;
@@ -101,15 +82,10 @@ const SignupContainer = styled.section`
   }
 `;
 
-const Line = styled.hr`
-  width: min(100%, 350px);
-  border-top: 1px solid ${COLORS.grey};
-`;
-
 const GitHubWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-export default Signup;
+export default SignIn;

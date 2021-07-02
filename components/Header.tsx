@@ -1,13 +1,29 @@
+import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { signOut, useSession } from 'next-auth/client';
 import logo from '../public/images/logo-teal.png';
 import githubLogo from '../public/images/github-logo.png';
 import npmLogo from '../public/images/npm-logo.png';
 import styled from 'styled-components';
 import { COLORS } from '../styles/constants';
 import Spacer from './Spacer';
+import Loading from './Loading';
 
 const Header = () => {
+  const [session, loading] = useSession();
+
+  useEffect(() => {
+    console.log({ session });
+    console.log({ loading });
+  }, [session, loading]);
+
+  const handleSignOut = () => {
+    signOut({ callbackUrl: 'http://localhost:3000/' });
+  };
+
+  if (loading) return <Loading />;
+
   return (
     <Wrapper>
       <NavBar>
@@ -22,11 +38,13 @@ const Header = () => {
         </Link>
         <Spacer size={24} />
         <Link href='/docs' passHref>
-          <NavLinkWrapper>Docs</NavLinkWrapper>
+          <NavLinkWrapper>Documentation</NavLinkWrapper>
         </Link>
         <Spacer size={24} />
-        {/* TODO: link to GitHub repo */}
-        <GitHubLinkWrapper href=''>
+        <GitHubLinkWrapper
+          href='https://github.com/oslabs-beta/tulo.js'
+          target='_blank'
+        >
           <Image src={githubLogo} alt='GitHub logo' width={28} height={28} />
         </GitHubLinkWrapper>
         <Spacer size={16} />
@@ -34,6 +52,14 @@ const Header = () => {
         <NpmLinkWrapper href=''>
           <Image src={npmLogo} alt='GitHub logo' width={60} height={45} />
         </NpmLinkWrapper>
+        <Spacer size={16} />
+        {session ? (
+          <NavLinkWrapper onClick={handleSignOut}>Sign out</NavLinkWrapper>
+        ) : (
+          <Link href='/signin' passHref>
+            <NavLinkWrapper>Sign in</NavLinkWrapper>
+          </Link>
+        )}
       </NavBar>
     </Wrapper>
   );
@@ -61,6 +87,15 @@ const ImageLinkWrapper = styled.a`
 const NavLinkWrapper = styled.a`
   text-decoration: none;
   color: ${COLORS.darkGrey};
+
+  &:hover {
+    cursor: pointer;
+    color: ${COLORS.purplePrimary};
+  }
+
+  &:focus {
+    color: ${COLORS.orangePrimary};
+  }
 `;
 
 const GitHubLinkWrapper = styled(NavLinkWrapper)`
