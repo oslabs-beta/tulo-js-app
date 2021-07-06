@@ -2,27 +2,31 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { signOut, useSession } from 'next-auth/client';
+import { useDispatch } from 'react-redux';
+import { updateUserSession } from '../redux/actions/actionCreators';
 import logo from '../public/images/logo-teal.png';
 import githubLogo from '../public/images/github-logo.png';
 import npmLogo from '../public/images/npm-logo.png';
 import styled from 'styled-components';
 import { COLORS } from '../styles/constants';
 import Spacer from './Spacer';
-import Loading from './Loading';
 
 const Header = () => {
   const [session, loading] = useSession();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log({ session });
-    console.log({ loading });
-  }, [session, loading]);
+    // if an auth session is established, dispatch an action to update the user state branch
+    if (session) {
+      const user = session.user;
+      dispatch(updateUserSession(user));
+    }
+  }, [session, loading, dispatch]);
 
   const handleSignOut = () => {
     signOut({ callbackUrl: 'http://localhost:3000/' });
+    // TODO: dispatch user signout action
   };
-
-  if (loading) return <Loading />;
 
   return (
     <Wrapper>
@@ -66,6 +70,9 @@ const Header = () => {
 };
 
 const Wrapper = styled.header`
+  position: sticky;
+  top: 0;
+  left: 0;
   padding: 0 24px;
   display: flex;
   justify-content: center;
