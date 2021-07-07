@@ -21,8 +21,15 @@ export default async function fetchUserIdHandler(
       const session = await sessionsCollection.findOne({
         accessToken: token,
       });
+
+      // access users collection from the database and find signed in user
+      const usersCollection = await db.collection('users');
+      const user = await usersCollection.findOne({
+        _id: session.userId,
+      });
+
       // send the session associated with the user back to the client-side
-      return res.status(200).json(session);
+      return res.status(200).json(user);
     } catch (error) {
       // TODO: add more robust error-handling
       console.log({ error });
