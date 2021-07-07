@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
 
-type UserStateObj = {
+export type UserStateObj = {
   _id: null | mongoose.Schema.Types.ObjectId;
   name: null | string;
   image: null | string;
   email: null | string;
+  appName?: null | string;
   authorized_origins: null | string[];
 };
 
@@ -16,6 +17,8 @@ type ActionProp = {
     name?: null | string;
     image?: null | string;
     email?: null | string;
+    appName?: null | string;
+
     authorized_origins?: null | string[];
   };
 };
@@ -25,12 +28,14 @@ const initialState: UserStateObj = {
   name: null,
   image: null,
   email: null,
+  appName: null,
   authorized_origins: null,
 };
 
 const userReducer = (state = initialState, action: ActionProp) => {
   switch (action.type) {
     case 'UPDATE_USER_SESSION':
+      console.log('userReducer case UPDATE_USER_SESSION');
       const { name, image, email, _id } = action.payload;
       return { ...state, name, image, email, _id };
     default:

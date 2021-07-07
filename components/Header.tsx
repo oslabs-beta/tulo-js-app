@@ -20,6 +20,9 @@ const Header = () => {
     // fetch the user id from the sessions collection in the database
     // then dispatch an action to update the user state branch
     if (session) {
+      console.log('there is a session');
+      console.log({ session });
+      console.log('there is a session');
       const currentUser = session.user;
       let userId: null | string = null;
 

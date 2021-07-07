@@ -12,19 +12,20 @@ export default async function fetchUserIdHandler(
   // connect to the database
   const db = await dbConnect();
 
-  // if the request is a GET request, send back the user id
+  // if the request is a GET request, send back the session document of the current user
   if (req.method === 'GET') {
     try {
-      db.collection('sessions', async (err, sessionsCollection) => {
-        if (err) console.log(err);
-        const session = await sessionsCollection.findOne({
-          accessToken: token,
-        });
-        return res.status(200).json(session);
+      // access sessions collection from the database
+      const sessionsCollection = await db.collection('sessions');
+      // query sessions collection for document matching user access token
+      const session = await sessionsCollection.findOne({
+        accessToken: token,
       });
-    } catch (e) {
+      // send the session associated with the user back to the client-side
+      return res.status(200).json(session);
+    } catch (error) {
       // TODO: add more robust error-handling
-      console.log(e);
+      console.log({ error });
       return res.status(500).send('Error retrieving user session information.');
     }
   } else {
