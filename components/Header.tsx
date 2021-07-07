@@ -16,10 +16,20 @@ const Header = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // if an auth session is established, dispatch an action to update the user state branch
+    // if an auth session is established,
+    // fetch the user id from the sessions collection in the database
+    // then dispatch an action to update the user state branch
     if (session) {
-      const user = session.user;
-      dispatch(updateUserSession(user));
+      const currentUser = session.user;
+      let userId: null | string = null;
+
+      fetch(`http://localhost:3000/api/user/${session.accessToken}`)
+        .then((res) => res.json())
+        .then((sessionDoc) => {
+          console.log({ sessionDoc });
+          userId = sessionDoc.userId;
+          dispatch(updateUserSession({ ...currentUser, _id: userId }));
+        });
     }
   }, [session, loading, dispatch]);
 
