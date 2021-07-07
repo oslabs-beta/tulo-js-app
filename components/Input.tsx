@@ -6,22 +6,18 @@ type InputProps = {
   name: string;
   type: string;
   placeholder: string;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Input = ({ name, type, placeholder }: InputProps) => {
-  const [value, setValue] = useState<string>('');
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-  };
-
+const Input = ({ name, type, placeholder, value, onChange }: InputProps) => {
   return (
     <PrimaryInput
       name={name}
       type={type}
       placeholder={placeholder}
       value={value}
-      onChange={handleChange}
+      onChange={onChange}
     />
   );
 };
