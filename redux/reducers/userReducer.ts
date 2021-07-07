@@ -6,7 +6,7 @@ export type UserStateObj = {
   image: null | string;
   email: null | string;
   appName?: null | string;
-  authorized_origins: null | string[];
+  authorized_origins?: null | string[];
 };
 
 // TODO: update payload types
@@ -35,9 +35,13 @@ const initialState: UserStateObj = {
 const userReducer = (state = initialState, action: ActionProp) => {
   switch (action.type) {
     case 'UPDATE_USER_SESSION':
-      console.log('userReducer case UPDATE_USER_SESSION');
-      const { name, image, email, _id } = action.payload;
-      return { ...state, name, image, email, _id };
+      const { name, image, email, _id, authorized_origins } = action.payload;
+      return { ...state, name, image, email, _id, authorized_origins };
+    case 'ADD_AUTHORIZED_ORIGIN':
+      return {
+        ...state,
+        authorized_origins: action.payload.authorized_origins,
+      };
     default:
       return state;
   }

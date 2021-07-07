@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useSession } from 'next-auth/client';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { UserStateObj } from '../../redux/reducers/userReducer';
+import { addAuthorizedOrigin } from '../../redux/actions/actionCreators';
 import styled from 'styled-components';
 import Layout from '../../components/Layout';
 import Loading from '../../components/Loading';
@@ -12,14 +14,38 @@ import { COLORS } from '../../styles/constants';
 
 const Dashboard = () => {
   const [session, loading] = useSession();
+
+  const dispatch = useDispatch();
   const user = useSelector((state: { user: UserStateObj }) => state.user);
 
-  const handleAddNameClick = () => {
-    // add app name to user document in database
+  const [origin, setOrigin] = useState('');
+
+  const handleOriginChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setOrigin(event.target.value);
   };
 
   const handleAddUrlClick = () => {
     // add authorized URL/origin to user document in database
+    fetch('http://localhost:3000/api/user/addOrigin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        _id: user._id,
+        origin: origin,
+      }),
+    })
+      .then((res) => res.json())
+      .then((userDoc) => {
+        // TODO: dispatch action to update user state branch
+        console.log({ userDoc });
+        dispatch(
+          addAuthorizedOrigin({
+            authorized_origins: userDoc.authorized_origins,
+          })
+        );
+      });
   };
 
   // if a user session is loading, display the Loading component
@@ -46,18 +72,14 @@ const Dashboard = () => {
               <DashboardBar>
                 <NameContainer>
                   <p>
-                    <strong>App name: </strong>
-                    {user.appName ? (
-                      user.appName
+                    <strong>App origin(s): </strong>
+                    {user.authorized_origins ? (
+                      <DisplayOrigins>
+                        {user.authorized_origins.join(', ')}
+                      </DisplayOrigins>
                     ) : (
-                      <AddCompanyButton onClick={handleAddNameClick}>
-                        Add
-                      </AddCompanyButton>
+                      ''
                     )}
-                  </p>
-                  <p>
-                    <strong>Origin(s): </strong>
-                    {user.authorized_origins ? user.authorized_origins : ''}
                   </p>
                 </NameContainer>
                 <UrlContainer>
@@ -65,6 +87,8 @@ const Dashboard = () => {
                     name='URL'
                     type='text'
                     placeholder='https://example.app'
+                    value={origin}
+                    onChange={handleOriginChange}
                   />
                   <Button onClick={handleAddUrlClick}>
                     Add authorized origin
@@ -109,28 +133,19 @@ const DashboardBar = styled.section`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const NameContainer = styled.div`
+  max-width: 50%;
+
   & p {
     font-size: 1.2rem;
   }
 `;
 
-const AddCompanyButton = styled.button`
-  margin-left: 8px;
+const DisplayOrigins = styled.span`
   font-size: 1rem;
-  color: ${COLORS.offWhite};
-  background-color: ${COLORS.purplePrimary};
-  border: 1px solid ${COLORS.purplePrimary};
-  border-radius: 8px;
-
-  &:hover {
-    cursor: pointer;
-    color: ${COLORS.offWhite};
-    background-color: ${COLORS.orangePrimary};
-    border: 1px solid ${COLORS.orangePrimary};
-  }
 `;
 
 const UrlContainer = styled.div`
