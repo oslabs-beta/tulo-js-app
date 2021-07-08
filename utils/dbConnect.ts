@@ -10,18 +10,41 @@ if (!MONGO_URI) {
   );
 }
 
-async function dbConnect() {
+async function dbConnectLegacy() {
   if (mongoose.connection.readyState >= 1) {
     // if connection is open return the instance of the database
     return mongoose.connection.db;
   }
 
-  const dbConnection = await mongoose.createConnection(MONGO_URI, {
+  let dbConnection;
+
+  dbConnection = await mongoose.createConnection(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
 
+  console.log('Connected to MongoDB database.');
+
   return dbConnection;
 }
 
-export default dbConnect;
+// TODO: refactor to one catch all connect function
+async function dbConnectNew() {
+  if (mongoose.connection.readyState >= 1) {
+    // if connection is open return the instance of the database
+    return mongoose.connection.db;
+  }
+
+  let dbConnection;
+
+  dbConnection = await mongoose.connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+
+  console.log('Connected to MongoDB database.');
+
+  return dbConnection;
+}
+
+export { dbConnectLegacy, dbConnectNew };

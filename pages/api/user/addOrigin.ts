@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import dbConnect from '../../../utils/dbConnect';
+import { dbConnectLegacy } from '../../../utils/dbConnect';
 import mongoose from 'mongoose';
 
 export default async function addOriginHandler(
@@ -7,13 +7,14 @@ export default async function addOriginHandler(
   res: NextApiResponse
 ) {
   // connect to the database
-  const db = await dbConnect();
+  const db = await dbConnectLegacy();
 
   // if the request is a POST request, add the origin to the user document in the database
   if (req.method === 'POST') {
     try {
       // access users collection from the database
-      const usersCollection = await db.collection('users');
+      const usersCollection = db.collection('users');
+      // const usersCollection = mongoose.models.User;
 
       // retrieve user from database and save existing origins, if set
       const _id = mongoose.Types.ObjectId(req.body._id);
