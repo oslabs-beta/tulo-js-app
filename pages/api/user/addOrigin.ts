@@ -14,7 +14,6 @@ export default async function addOriginHandler(
     try {
       // access users collection from the database
       const usersCollection = db.collection('users');
-      // const usersCollection = mongoose.models.User;
 
       // retrieve user from database and save existing origins, if set
       const _id = mongoose.Types.ObjectId(req.body._id);

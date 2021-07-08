@@ -8,54 +8,57 @@ import Metric from '../../../models/Metric';
 
 // Initializing the cors middleware
 const cors = Cors({
-  methods: ['GET', 'POST', 'OPTIONS'],
+  methods: ['POST', 'OPTIONS'],
 });
 
-export default async function handler(
+export default async function postMetricsHandler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log({ origin: req.headers.origin, body: req.body });
-  const origin = req.headers.origin;
-  const { resource, strategy, action, timestamp } = req.body;
-
   // run cors middleware
   await runMiddleware(req, res, cors);
-
   // connect to database
   await dbConnectNew();
 
-  try {
-    // find document for resource in metrics collection
-    let resourceDoc;
-    console.log('1', { resourceDoc });
-    resourceDoc = await Metric.findOne({
-      origin,
-      resource,
-    }).exec();
-    console.log('2', { resourceDoc });
+  if (req.method === 'POST') {
+    const origin = req.headers.origin;
+    const { resource, strategy, action, timestamp } = req.body;
 
-    // create metric document for resource if it doesn't exist
-    if (!resourceDoc) {
-      resourceDoc = await Metric.create({
+    try {
+      // find document for resource in metrics collection
+      let resourceDoc;
+      resourceDoc = await Metric.findOne({
         origin,
         resource,
-        strategy,
-        actions: [],
+      }).exec();
+
+      // create metric document for resource if it doesn't exist
+      if (!resourceDoc) {
+        resourceDoc = await Metric.create({
+          origin,
+          resource,
+          strategy,
+          actions: [],
+        });
+      }
+
+      // POST action from client app to resource document
+      resourceDoc.actions.push({
+        action,
+        timestamp,
       });
+
+      await resourceDoc.save();
+
+      return res
+        .status(200)
+        .send('Metrics successfully sent to tulojs.com API endpoint.');
+    } catch (error) {
+      // TODO: error handling
+      console.error({ error });
+      return res
+        .status(500)
+        .send('Error sending metrics to tulojs.com API endpoint.');
     }
-
-    // POST action from client app to resource document
-    resourceDoc.actions.push({
-      action,
-      timestamp,
-    });
-
-    await resourceDoc.save();
-  } catch (error) {
-    // TODO: error handling
-    console.error({ error });
   }
-
-  res.status(200).json({ hello: 'hello sent from /api/hello' });
 }

@@ -23,7 +23,6 @@ const Header = () => {
       fetch(`http://localhost:3000/api/user/${session.accessToken}`)
         .then((res) => res.json())
         .then((userDoc) => {
-          console.log({ userDoc });
           dispatch(updateUserSession({ ...userDoc }));
         });
     }
@@ -83,6 +82,7 @@ const Wrapper = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: ${COLORS.offWhite};
   box-shadow: 0 0 8px ${COLORS.tealPrimary};
 `;
 
