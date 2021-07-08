@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import dbConnect from '../../../utils/dbConnect';
+import { dbConnectLegacy } from '../../../utils/dbConnect';
 
 export default async function fetchUserIdHandler(
   req: NextApiRequest,
@@ -10,7 +10,7 @@ export default async function fetchUserIdHandler(
   if (Array.isArray(token)) token = token[0];
 
   // connect to the database
-  const db = await dbConnect();
+  const db = await dbConnectLegacy();
 
   // if the request is a GET request, send back the session document of the current user
   if (req.method === 'GET') {
