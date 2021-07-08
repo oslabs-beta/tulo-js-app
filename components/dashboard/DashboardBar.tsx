@@ -31,7 +31,6 @@ const DashboardBar = () => {
       .then((res) => res.json())
       .then((userDoc) => {
         // TODO: dispatch action to update user state branch
-        console.log({ userDoc });
         dispatch(
           addAuthorizedOrigin({
             authorized_origins: userDoc.authorized_origins,
