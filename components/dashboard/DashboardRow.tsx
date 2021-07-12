@@ -2,24 +2,43 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../styles/constants';
 
-// TODO: improve type checking
-type RowProps = {
-  resource: any;
+type ActionObject = {
+  action: string;
+  timestamp: Date;
+  resourceSize: number;
+  loadTime: number;
 };
 
-const DashboardRow = ({ resource }: RowProps) => {
-  const [actions, setActions] = useState<any>({});
+type ActionCountObject = {
+  [cacheStrategyName: string]: number;
+};
+
+type DashboardRowProps = {
+  resource: {
+    origin: string;
+    resource: string;
+    strategy: string;
+    active: boolean;
+    actions: ActionObject[];
+  };
+};
+
+const DashboardRow = ({ resource }: DashboardRowProps) => {
+  const [actions, setActions] = useState<ActionCountObject | null>(null);
 
   useEffect(() => {
-    let actionCount: any;
+    let actionCountObj: ActionCountObject;
     if (resource.actions) {
-      actionCount = {};
+      actionCountObj = {};
       // loop through the array of actions to create a counter object to tally distinct action occurrences
-      resource.actions.forEach((actionObj: any, index: number) => {
-        if (actionCount[actionObj.action]) actionCount[actionObj.action]++;
-        else actionCount[actionObj.action] = 1;
+      resource.actions.forEach((actionObj: ActionObject) => {
+        if (actionCountObj[actionObj.action]) {
+          actionCountObj[actionObj.action]++;
+        } else {
+          actionCountObj[actionObj.action] = 1;
+        }
       });
-      setActions(actionCount);
+      setActions(actionCountObj);
     }
   }, [resource.actions]);
 
@@ -40,16 +59,19 @@ const DashboardRow = ({ resource }: RowProps) => {
       <CacheEventsWrapper>
         <CacheName>Cache events</CacheName>
         <CacheEventWrapper>
-          {Object.keys(actions).map((action: string, index: number) => (
-            <CacheEvent key={index}>
-              {action}:{' '}
-              {(
-                (Number(actions[action]) / resource.actions.length) *
-                100
-              ).toFixed(1)}
-              %
-            </CacheEvent>
-          ))}
+          {actions &&
+            Object.keys(actions).map(
+              (action: string | number, index: number) => (
+                <CacheEvent key={index}>
+                  {action}:{' '}
+                  {(
+                    (Number(actions[action]) / resource.actions.length) *
+                    100
+                  ).toFixed(1)}
+                  %
+                </CacheEvent>
+              )
+            )}
         </CacheEventWrapper>
       </CacheEventsWrapper>
     </RowWrapper>

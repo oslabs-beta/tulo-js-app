@@ -5,8 +5,7 @@ import styled from 'styled-components';
 import { COLORS } from '../../styles/constants';
 import DashboardRow from './DashboardRow';
 
-// TODO: improve type checking on resources array in useState hook (MetricDocsType currently unused)
-type MetricDocsType = [
+type MetricArrayType = [
   {
     origin: string;
     resource: string;
@@ -24,7 +23,7 @@ type MetricDocsType = [
 ];
 
 const DashboardBox = () => {
-  const [resources, setResources] = useState<any[]>([]);
+  const [resources, setResources] = useState<MetricArrayType | null>(null);
 
   const user = useSelector((state: { user: UserStateObj }) => state.user);
   // access the authorized origin from the signed in user
@@ -43,7 +42,7 @@ const DashboardBox = () => {
         body: JSON.stringify({ origin }),
       })
         .then((res) => res.json())
-        .then((metricDocs) => {
+        .then((metricDocs: MetricArrayType | null) => {
           if (Array.isArray(metricDocs)) {
             setResources(metricDocs);
           }
@@ -53,7 +52,7 @@ const DashboardBox = () => {
 
   return (
     <Box>
-      {resources.map((resourceDoc, i) => (
+      {resources && resources.map((resourceDoc, i) => (
         <DashboardRow resource={resourceDoc} key={`${resourceDoc}${i}`} />
       ))}
     </Box>

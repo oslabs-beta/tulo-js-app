@@ -5,20 +5,16 @@ export type UserStateObj = {
   name: null | string;
   image: null | string;
   email: null | string;
-  appName?: null | string;
   authorized_origins?: null | string[];
 };
 
-// TODO: update payload types
-type ActionProp = {
+type ReduxActionProp = {
   type: string;
   payload: {
     _id?: null | mongoose.Schema.Types.ObjectId;
     name?: null | string;
     image?: null | string;
     email?: null | string;
-    appName?: null | string;
-
     authorized_origins?: null | string[];
   };
 };
@@ -28,11 +24,10 @@ const initialState: UserStateObj = {
   name: null,
   image: null,
   email: null,
-  appName: null,
   authorized_origins: null,
 };
 
-const userReducer = (state = initialState, action: ActionProp) => {
+const userReducer = (state = initialState, action: ReduxActionProp) => {
   switch (action.type) {
     case 'UPDATE_USER_SESSION':
       const { name, image, email, _id, authorized_origins } = action.payload;
