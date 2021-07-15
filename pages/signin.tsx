@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
 import { signIn, useSession } from 'next-auth/client';
-import { AUTH_CALLBACK_URL } from '../utils/constants';
+import { PRODUCTION_URL } from '../utils/constants';
 import styled from 'styled-components';
 import { COLORS } from '../styles/constants';
 import logo from '../public/images/logo-offWhite.png';
@@ -25,9 +25,11 @@ const SignIn = () => {
   // sign in event handler invoked on button click
   const handleSignIn = () => {
     // Docs for next-auth Client API signIn: https://next-auth.js.org/getting-started/client#signin
-    signIn('github', {
-      callbackUrl: `${AUTH_CALLBACK_URL}/dashboard`,
-    });
+    signIn('github');
+    // TODO: update callback URL to production URL for deployment
+    // signIn('github', {
+    //   callbackUrl: `${PRODUCTION_URL}/dashboard`,
+    // });
   };
 
   // if a user session is loading, display the Loading component

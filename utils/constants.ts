@@ -1,3 +1,3 @@
-const AUTH_CALLBACK_URL = 'http://localhost:3000';
+const PRODUCTION_URL = 'http://localhost:3000';
 
-export { AUTH_CALLBACK_URL };
+export { PRODUCTION_URL };
