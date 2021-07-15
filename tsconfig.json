@@ -19,6 +19,6 @@
     "**/*.ts",
     "**/*.tsx",
     "pages/api/user/[token].ts"
-  ],
+, "public/sw.js"  ],
   "exclude": ["node_modules"]
 }
