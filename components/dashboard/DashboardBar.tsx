@@ -18,7 +18,7 @@ const DashboardBar = () => {
 
   const handleAddUrlClick = () => {
     // add authorized URL/origin to user document in database
-    fetch('http://localhost:3000/api/user/addOrigin', {
+    fetch('/api/user/addOrigin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ const DashboardBar = () => {
     })
       .then((res) => res.json())
       .then((userDoc) => {
-        // TODO: dispatch action to update user state branch
+        // dispatch action to update user state branch
         dispatch(
           addAuthorizedOrigin({
             authorized_origins: userDoc.authorized_origins,

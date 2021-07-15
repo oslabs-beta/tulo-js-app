@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
 import { signIn, useSession } from 'next-auth/client';
+import { AUTH_CALLBACK_URL } from '../utils/constants';
 import styled from 'styled-components';
 import { COLORS } from '../styles/constants';
 import logo from '../public/images/logo-offWhite.png';
@@ -25,7 +26,7 @@ const SignIn = () => {
   const handleSignIn = () => {
     // Docs for next-auth Client API signIn: https://next-auth.js.org/getting-started/client#signin
     signIn('github', {
-      callbackUrl: 'http://localhost:3000/dashboard',
+      callbackUrl: `${AUTH_CALLBACK_URL}/dashboard`,
     });
   };
 
