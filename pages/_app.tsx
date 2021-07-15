@@ -5,6 +5,7 @@ import type { AppProps } from 'next/app';
 import { Provider as AuthProvider } from 'next-auth/client';
 import { Provider as ReduxProvider } from 'react-redux';
 import store from '../redux/store';
+import { COLORS } from '../styles/constants';
 
 const App = ({ Component, pageProps }: AppProps) => {
   // register service worker when App mounts
@@ -28,10 +29,15 @@ const App = ({ Component, pageProps }: AppProps) => {
       <Head>
         <link rel='manifest' href='/manifest.json' />
         <link rel='icon' type='image/png' href='/favicon.ico' />
+        <link
+          rel='apple-touch-icon'
+          href='/images/android-chrome-192x192.png'
+        />
         <meta
           name='description'
           content='Making service workers easy so that your app is fast and reliable, even offline.'
         />
+        <meta name='theme-color' content={COLORS.tealPrimary} />
       </Head>
       <AuthProvider session={pageProps.session}>
         <ReduxProvider store={store}>
