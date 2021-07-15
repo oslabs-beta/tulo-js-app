@@ -25,7 +25,7 @@ const SignIn = () => {
   const handleSignIn = () => {
     // Docs for next-auth Client API signIn: https://next-auth.js.org/getting-started/client#signin
     signIn('github', {
-      callbackUrl: 'http://localhost:3000/dashboard',
+      callbackUrl: 'http:///dashboard',
     });
   };
 

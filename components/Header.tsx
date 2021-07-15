@@ -20,7 +20,7 @@ const Header = () => {
     // fetch the user from the sessions collection in the database
     // then dispatch an action to update the user state branch
     if (session) {
-      fetch(`http://localhost:3000/api/user/${session.accessToken}`)
+      fetch(`/api/user/${session.accessToken}`)
         .then((res) => res.json())
         .then((userDoc) => {
           dispatch(updateUserSession({ ...userDoc }));
@@ -29,7 +29,7 @@ const Header = () => {
   }, [session, loading, dispatch]);
 
   const handleSignOut = () => {
-    signOut({ callbackUrl: 'http://localhost:3000/' });
+    signOut({ callbackUrl: 'http:///' });
     // TODO: dispatch user signout action
   };
 

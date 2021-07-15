@@ -18,7 +18,7 @@ const DashboardBar = () => {
 
   const handleAddUrlClick = () => {
     // add authorized URL/origin to user document in database
-    fetch('http://localhost:3000/api/user/addOrigin', {
+    fetch('http:///api/user/addOrigin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
