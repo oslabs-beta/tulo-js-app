@@ -1,11 +1,14 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useSession } from 'next-auth/client';
 import styled from 'styled-components';
 import Layout from '../../components/Layout';
 import Loading from '../../components/Loading';
+import Spacer from '../../components/Spacer';
 import DashboardBar from '../../components/dashboard/DashboardBar';
 import DashboardBox from '../../components/dashboard/DashboardBox';
+import undrawDashboard from '../../public/images/undraw_Dashboard.svg';
 import { COLORS } from '../../styles/constants';
 
 const Dashboard = () => {
@@ -31,6 +34,10 @@ const Dashboard = () => {
               <Link href='/signin' passHref>
                 <SigninLink>Sign in to view the dashboard &rarr;</SigninLink>
               </Link>
+              <Spacer size={80} />
+              <ImageWrapper>
+                <Image src={undrawDashboard} alt='dashboard illustration' />
+              </ImageWrapper>
             </Wrapper>
           ) : (
             <>
@@ -55,6 +62,7 @@ const Main = styled.main`
 const Wrapper = styled.div`
   flex-basis: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
@@ -74,6 +82,10 @@ const SigninLink = styled.a`
     outline: none;
     text-shadow: 0 0 8px ${COLORS.grey};
   }
+`;
+
+const ImageWrapper = styled.div`
+  width: 50%;
 `;
 
 export default Dashboard;
