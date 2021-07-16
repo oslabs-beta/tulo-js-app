@@ -1,0 +1,28 @@
+{
+  "name": "tulo.js",
+  "icons": [
+    {
+      "src": "/images/android-chrome-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/android-chrome-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/maskable_icon_x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "start_url": "/dashboard",
+  "display": "minimal-ui",
+  "background_color": "#0f998e",
+  "theme_color": "#0f998e",
+  "description": "Making service workers easy so that your app is fast and reliable, even offline."
+}

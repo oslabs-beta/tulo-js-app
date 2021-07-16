@@ -34,7 +34,7 @@ const DashboardBox = () => {
   useEffect(() => {
     // GET all metrics from database for the signed in user (filter by origin)
     if (origin) {
-      fetch(`http://localhost:3000/api/metrics/data`, {
+      fetch(`/api/metrics/data`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,9 +52,10 @@ const DashboardBox = () => {
 
   return (
     <Box>
-      {resources && resources.map((resourceDoc, i) => (
-        <DashboardRow resource={resourceDoc} key={`${resourceDoc}${i}`} />
-      ))}
+      {resources &&
+        resources.map((resourceDoc, i) => (
+          <DashboardRow resource={resourceDoc} key={`${resourceDoc}${i}`} />
+        ))}
     </Box>
   );
 };
