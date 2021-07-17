@@ -9,9 +9,9 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Poppins', sans-serif;
   }
 
-  h1 {
-    font-size: 2rem;
-  }
+  h1 { font-size: 2rem; }
+
+  p { font-size: 1.25rem; }
 `;
 
 // CSS reset adapted from Piccalilli: https://piccalil.li/blog/a-modern-css-reset

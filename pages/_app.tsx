@@ -28,7 +28,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     <>
       <Head>
         <link rel='manifest' href='/manifest.json' />
-        <link rel='icon' type='image/png' href='/favicon.ico' />
+        <link rel='icon' href='/favicon.ico' />
         <link
           rel='apple-touch-icon'
           href='/images/android-chrome-192x192.png'
