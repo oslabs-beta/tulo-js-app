@@ -22,33 +22,26 @@ export default async function postMetricsHandler(
 
   if (req.method === 'POST') {
     const origin = req.headers.origin;
-    const { resource, strategy, action, timestamp } = req.body;
-
+    const metricsQueue = req.body;
     try {
       // find document for resource in metrics collection
-      let resourceDoc;
-      resourceDoc = await Metric.findOne({
-        origin,
-        resource,
-      }).exec();
-
-      // create metric document for resource if it doesn't exist
-      if (!resourceDoc) {
-        resourceDoc = await Metric.create({
+      console.log('Received metricsQueue', metricsQueue);
+      for (const metrics of metricsQueue) {
+        const { url, message, strategy, size, loadtime, connection, device, timestamp } = metrics;
+        let resourceDoc = await Metric.create({
           origin,
-          resource,
+          url,
+          message,
           strategy,
-          actions: [],
+          size,
+          loadtime,
+          connection,
+          device,
+          timestamp,
         });
+
+        await resourceDoc.save();
       }
-
-      // POST action from client app to resource document
-      resourceDoc.actions.push({
-        action,
-        timestamp,
-      });
-
-      await resourceDoc.save();
 
       return res
         .status(200)

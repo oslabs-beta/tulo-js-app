@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addAuthorizedOrigin } from '../../redux/actions/actionCreators';
+import { editAuthorizedOrigin } from '../../redux/actions/actionCreators';
 import { UserStateObj } from '../../redux/reducers/userReducer';
 import styled from 'styled-components';
 import Input from '../../components/Input';
@@ -31,11 +31,7 @@ const DashboardBar = () => {
       .then((res) => res.json())
       .then((userDoc) => {
         // dispatch action to update user state branch
-        dispatch(
-          addAuthorizedOrigin({
-            authorized_origins: userDoc.authorized_origins,
-          })
-        );
+        dispatch(editAuthorizedOrigin({ authorized_origin: userDoc.authorized_origin }));
       });
   };
 
@@ -44,9 +40,9 @@ const DashboardBar = () => {
       <NameContainer>
         <p>
           <strong>App origin(s): </strong>
-          {user.authorized_origins ? (
+          {user.authorized_origin ? (
             <DisplayOrigins>
-              {user.authorized_origins.join(', ')}
+              {user.authorized_origin}
             </DisplayOrigins>
           ) : (
             ''
@@ -61,7 +57,7 @@ const DashboardBar = () => {
           value={origin}
           onChange={handleOriginChange}
         />
-        <Button onClick={handleAddUrlClick}>Add authorized origin</Button>
+        <Button onClick={handleAddUrlClick}>{user.authorized_origin ? 'Edit' : 'Add'} authorized origin</Button>
       </UrlContainer>
     </Bar>
   );

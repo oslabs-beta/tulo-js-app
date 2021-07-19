@@ -18,15 +18,14 @@ export default async function addOriginHandler(
       // retrieve user from database and save existing origins, if set
       const _id = mongoose.Types.ObjectId(req.body._id);
       const user = await usersCollection.findOne({ _id: _id });
-      const origins = user.authorized_origins ? user.authorized_origins : [];
 
       // add origin from POST request to saved origin array
-      origins.push(req.body.origin);
+      const origin = req.body.origin;
 
       // update user document to reflect added origin
       await usersCollection.findOneAndUpdate(
         { _id: _id },
-        { $set: { authorized_origins: origins } }
+        { $set: { authorized_origin: origin } }
       );
       const updatedUser = await usersCollection.findOne({ _id: _id });
 

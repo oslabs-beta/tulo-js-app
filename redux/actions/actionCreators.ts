@@ -16,13 +16,13 @@ const updateUserSession = (user: UserProp) => ({
 
 type OriginProp =
   | {
-      authorized_origins: string[];
+      authorized_origin: string;
     }
   | undefined;
 
-const addAuthorizedOrigin = (origin: OriginProp) => ({
-  type: types.ADD_AUTHORIZED_ORIGIN,
+const editAuthorizedOrigin = (origin: OriginProp) => ({
+  type: types.EDIT_AUTHORIZED_ORIGIN,
   payload: origin,
 });
 
-export { updateUserSession, addAuthorizedOrigin };
+export { updateUserSession, editAuthorizedOrigin };

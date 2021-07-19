@@ -5,57 +5,166 @@ import styled from 'styled-components';
 import { COLORS } from '../../styles/constants';
 import DashboardRow from './DashboardRow';
 
-type MetricArrayType = [
-  {
-    origin: string;
-    resource: string;
-    strategy: string;
-    active: boolean;
-    actions: [
-      {
-        action: string;
-        timestamp: Date;
-        resourceSize: number;
-        loadTime: number;
-      }
-    ];
-  }
-];
+export type MetricType = {
+  origin: string;
+  url: string;
+  message: string;
+  strategy: string;
+  size: string; // e.g. 1120 (Bytes)
+  loadtime: string;
+  connection: string;
+  device: string;
+  timestamp: Date;
+};
+
+type EventType = {
+  event: string; // e.g. Found in Cache
+  averageLoadTime: number;
+  count: number;
+};
+
+type DeviceType = {
+  device: string; //e.g. Mozilla Firefox, Google Chrome
+  count: number;
+};
+
+type ConnectionType = {
+  connection: string; // e.g. 4G, Offline, 2G
+  count: number;
+};
+
+type StrategyType = {
+  strategy: string; // e.g. Cache First,
+  events: EventType[];
+  devices: DeviceType[];
+  connections: ConnectionType[];
+  total: number;
+};
+
+export type ResourceType = {
+  url: string;
+  size: string;
+  strategies: StrategyType[];
+};
 
 const DashboardBox = () => {
-  const [resources, setResources] = useState<MetricArrayType | null>(null);
+  const [resources, setResources] = useState<ResourceType[] | null>(null);
 
   const user = useSelector((state: { user: UserStateObj }) => state.user);
   // access the authorized origin from the signed in user
-  // TODO: refactor to handle the case of multiple origins
   let origin: string = '';
-  if (user.authorized_origins) origin = user.authorized_origins[0];
+  if (user.authorized_origin) origin = user.authorized_origin;
 
   useEffect(() => {
     // GET all metrics from database for the signed in user (filter by origin)
+    // TODO: re-factor resources array state to be more performant (and transfer logic to be held in api route)
+
     if (origin) {
-      fetch(`/api/metrics/data`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ origin }),
-      })
-        .then((res) => res.json())
-        .then((metricDocs: MetricArrayType | null) => {
-          if (Array.isArray(metricDocs)) {
-            setResources(metricDocs);
-          }
-        });
+      try {
+        const res = fetch(`/api/metrics/data`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ origin }),
+        })
+          .then((res) => res.json())
+          // save array of metric documents/objects returned from the database
+          .then((metricsData) => {
+            if (!metricsData) throw new Error('No metrics found');
+            // declare array to store fetched resources (object for each resource/url)
+            const fetchedResources: ResourceType[] = [];
+            for (const metricDocument of metricsData) {
+              const {
+                url,
+                size,
+                strategy,
+                message,
+                connection,
+                device,
+                loadtime,
+              } = metricDocument;
+
+              // check if the resource url is already saved to the fetchedResources array
+              let resourceObj: ResourceType | undefined = fetchedResources.find(
+                (resObj) => resObj.url === url
+              );
+              if (!resourceObj) {
+                resourceObj = { url, size, strategies: [] };
+                fetchedResources.push(resourceObj);
+              }
+
+              // check if a strategy object exists matching the current strategy from the metric doc
+              let strategyObj: StrategyType | undefined =
+                resourceObj.strategies.find(
+                  (stratObj) => stratObj.strategy === strategy
+                );
+              if (!strategyObj) {
+                strategyObj = {
+                  strategy,
+                  events: [],
+                  devices: [],
+                  connections: [],
+                  total: 0,
+                };
+                resourceObj.strategies.push(strategyObj);
+              }
+              strategyObj.total++;
+
+              // check if an event object exists matching the current event from the metric doc
+              let eventObj: EventType | undefined = strategyObj.events.find(
+                (evtObj) => evtObj.event === message
+              );
+              if (!eventObj) {
+                eventObj = {
+                  event: message,
+                  averageLoadTime: Number(loadtime),
+                  count: 0,
+                };
+                strategyObj.events.push(eventObj);
+              }
+              eventObj.averageLoadTime =
+                (eventObj.averageLoadTime * eventObj.count + Number(loadtime)) /
+                ++eventObj.count;
+
+              // check if a device object exists matching the current device from the metric doc
+              let deviceObj: DeviceType | undefined = strategyObj.devices.find(
+                (devObj) => devObj.device === device
+              );
+              if (!deviceObj) {
+                deviceObj = { device, count: 0 };
+                strategyObj.devices.push(deviceObj);
+              }
+              deviceObj.count++;
+
+              // check if a connection object exists matching the current connection from the metric doc
+              let connectionObj: ConnectionType | undefined =
+                strategyObj.connections.find(
+                  (connObj) => connObj.connection === connection
+                );
+              if (!connectionObj) {
+                connectionObj = { connection, count: 0 };
+                strategyObj.connections.push(connectionObj);
+              }
+              connectionObj.count++;
+            }
+
+            // update resources array in state
+            setResources(fetchedResources);
+            console.log(fetchedResources);
+          })
+          .catch((err) => console.error(err));
+      } catch (err) {
+        console.error('Failed to fetch data from server', err);
+      }
     }
-  }, [user, origin]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [origin, user]);
 
   return (
     <Box>
-      {resources &&
-        resources.map((resourceDoc, i) => (
-          <DashboardRow resource={resourceDoc} key={`${resourceDoc}${i}`} />
-        ))}
+      {resources && resources.map((resourceObj, index) => <DashboardRow resourceObj={resourceObj} key={index}/>)}
     </Box>
   );
 };
