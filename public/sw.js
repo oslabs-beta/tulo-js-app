@@ -6,7 +6,7 @@ self.addEventListener('install', function installHandler(installEvent) {
 });
 
 self.addEventListener('fetch', function fetchHandler(fetchEvent) {
-  console.log('Service worker fetch handler.');
+  // console.log('Service worker fetch handler.');
 });
 
 // TODO: fix sw errors
