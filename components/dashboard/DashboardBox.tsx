@@ -30,6 +30,7 @@ type DeviceType = {
 
 type ConnectionType = {
   connection: string; // e.g. 4G, Offline, 2G
+  averageLoadTime: number;
   count: number;
 };
 
@@ -47,8 +48,18 @@ export type ResourceType = {
   strategies: StrategyType[];
 };
 
+//currentStrategies := {/bluewill.png: {CacheFirst, TS}, /styles.css:{CacheFirst, TS}, /index.html:{NetworkFirst, TS}, /:{NetworkFirst, TS}}
+type CurrentStrategiesType = {
+  [url: string]: {
+    strategy: string;
+    timestamp: Date;
+  };
+};
+
 const DashboardBox = () => {
   const [resources, setResources] = useState<ResourceType[] | null>(null);
+  const [currentStrategies, setCurrentStrategies] =
+    useState<CurrentStrategiesType>({});
 
   const user = useSelector((state: { user: UserStateObj }) => state.user);
   // access the authorized origin from the signed in user
@@ -61,7 +72,7 @@ const DashboardBox = () => {
 
     if (origin) {
       try {
-        const res = fetch(`/api/metrics/data`, {
+        fetch(`/api/metrics/data`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -72,6 +83,9 @@ const DashboardBox = () => {
           // save array of metric documents/objects returned from the database
           .then((metricsData) => {
             if (!metricsData) throw new Error('No metrics found');
+
+            let currentStrategies: CurrentStrategiesType = {};
+
             // declare array to store fetched resources (object for each resource/url)
             const fetchedResources: ResourceType[] = [];
             for (const metricDocument of metricsData) {
@@ -83,6 +97,7 @@ const DashboardBox = () => {
                 connection,
                 device,
                 loadtime,
+                timestamp,
               } = metricDocument;
 
               // check if the resource url is already saved to the fetchedResources array
@@ -99,6 +114,7 @@ const DashboardBox = () => {
                 resourceObj.strategies.find(
                   (stratObj) => stratObj.strategy === strategy
                 );
+
               if (!strategyObj) {
                 strategyObj = {
                   strategy,
@@ -107,6 +123,7 @@ const DashboardBox = () => {
                   connections: [],
                   total: 0,
                 };
+
                 resourceObj.strategies.push(strategyObj);
               }
               strategyObj.total++;
@@ -143,11 +160,27 @@ const DashboardBox = () => {
                   (connObj) => connObj.connection === connection
                 );
               if (!connectionObj) {
-                connectionObj = { connection, count: 0 };
+                connectionObj = {
+                  connection,
+                  averageLoadTime: Number(loadtime),
+                  count: 0,
+                };
                 strategyObj.connections.push(connectionObj);
               }
-              connectionObj.count++;
+              connectionObj.averageLoadTime =
+                (connectionObj.averageLoadTime * connectionObj.count +
+                  Number(loadtime)) /
+                ++connectionObj.count;
+
+              //setting current strategies - check if the timestamp of the current strategy is > the previous 'current' strategy
+              if (
+                !currentStrategies[url] ||
+                timestamp > currentStrategies[url].timestamp
+              )
+                currentStrategies[url] = { strategy, timestamp };
             }
+
+            setCurrentStrategies(currentStrategies);
 
             // update resources array in state
             setResources(fetchedResources);
@@ -164,7 +197,14 @@ const DashboardBox = () => {
 
   return (
     <Box>
-      {resources && resources.map((resourceObj, index) => <DashboardRow resourceObj={resourceObj} key={index}/>)}
+      {resources &&
+        resources.map((resourceObj, index) => (
+          <DashboardRow
+            resourceObj={resourceObj}
+            currentStrategy={currentStrategies[resourceObj.url].strategy}
+            key={index}
+          />
+        ))}
     </Box>
   );
 };
@@ -177,7 +217,19 @@ const Box = styled.section`
   margin-top: 36px;
   margin-bottom: 48px;
   border-radius: 8px;
-  box-shadow: 0 0 12px ${COLORS.grey};
+  animation: glow 3s ease-in-out infinite;
+
+  @keyframes glow {
+    0% {
+      box-shadow: 0 0 12px ${COLORS.darkGrey};
+    }
+    50% {
+      box-shadow: 0 0 24px ${COLORS.purplePrimary};
+    }
+    100% {
+      box-shadow: 0 0 12px ${COLORS.darkGrey};
+    }
+  }
 `;
 
 export default DashboardBox;

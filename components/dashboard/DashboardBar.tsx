@@ -31,7 +31,11 @@ const DashboardBar = () => {
       .then((res) => res.json())
       .then((userDoc) => {
         // dispatch action to update user state branch
-        dispatch(editAuthorizedOrigin({ authorized_origin: userDoc.authorized_origin }));
+        dispatch(
+          editAuthorizedOrigin({ authorized_origin: userDoc.authorized_origin })
+        );
+        // reset origin input value to empty string
+        setOrigin('');
       });
   };
 
@@ -39,11 +43,9 @@ const DashboardBar = () => {
     <Bar>
       <NameContainer>
         <p>
-          <strong>App origin(s): </strong>
+          <strong>App origin: </strong>
           {user.authorized_origin ? (
-            <DisplayOrigins>
-              {user.authorized_origin}
-            </DisplayOrigins>
+            <DisplayOrigins>{user.authorized_origin}</DisplayOrigins>
           ) : (
             ''
           )}
@@ -57,7 +59,9 @@ const DashboardBar = () => {
           value={origin}
           onChange={handleOriginChange}
         />
-        <Button onClick={handleAddUrlClick}>{user.authorized_origin ? 'Edit' : 'Add'} authorized origin</Button>
+        <Button onClick={handleAddUrlClick}>
+          {user.authorized_origin ? 'Edit' : 'Add'} authorized origin
+        </Button>
       </UrlContainer>
     </Bar>
   );
@@ -89,6 +93,16 @@ const UrlContainer = styled.div`
     font-size: 1rem;
     text-align: center;
     margin-left: 16px;
+  }
+
+  @media (max-width: 1200px) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    & input {
+      margin-bottom: 16px;
+    }
   }
 `;
 
