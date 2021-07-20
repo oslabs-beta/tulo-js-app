@@ -27,7 +27,16 @@ export default async function postMetricsHandler(
       // find document for resource in metrics collection
       console.log('Received metricsQueue', metricsQueue);
       for (const metrics of metricsQueue) {
-        const { url, message, strategy, size, loadtime, connection, device, timestamp } = metrics;
+        const {
+          url,
+          message,
+          strategy,
+          size,
+          loadtime,
+          connection,
+          device,
+          timestamp,
+        } = metrics;
         let resourceDoc = await Metric.create({
           origin,
           url,
@@ -47,13 +56,10 @@ export default async function postMetricsHandler(
         .status(200)
         .send('Metrics successfully sent to tulojs.com API endpoint.');
     } catch (error) {
-      // TODO: error handling
       console.error({ error });
       return res
         .status(500)
         .send('Error sending metrics to tulojs.com API endpoint.');
     }
-  } else if(req.method === 'OPTIONS'){
-    return res.status(200).end();
   }
 }
