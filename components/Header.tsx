@@ -30,9 +30,7 @@ const Header = () => {
   }, [session, loading, dispatch]);
 
   const handleSignOut = () => {
-    signOut();
-    // TODO: update callback URL to production URL for deployment
-    // signOut({ callbackUrl: PRODUCTION_URL });
+    signOut({ callbackUrl: PRODUCTION_URL });
     // TODO: dispatch user signout action
   };
 
