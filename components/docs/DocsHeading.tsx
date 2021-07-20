@@ -10,12 +10,13 @@ const DocsHeading = ({ children }: { children: React.ReactNode }) => {
 const Heading = styled.h1`
   margin-bottom: 24px;
 
-  &:hover {
+  /* &:hover {
     &::after {
+      cursor: pointer;
       content: ' #';
       color: ${COLORS.orangePrimary};
     }
-  }
+  } */
 `;
 
 export default DocsHeading;
