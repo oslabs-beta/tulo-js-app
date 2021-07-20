@@ -58,8 +58,10 @@ const Header = () => {
           <Image src={githubLogo} alt='GitHub logo' width={28} height={28} />
         </GitHubLinkWrapper>
         <Spacer size={16} />
-        {/* TODO: link to npm page */}
-        <NpmLinkWrapper href=''>
+        <NpmLinkWrapper
+          href='https://www.npmjs.com/package/tulo-js'
+          target='_blank'
+        >
           <Image src={npmLogo} alt='GitHub logo' width={60} height={45} />
         </NpmLinkWrapper>
         <Spacer size={16} />
