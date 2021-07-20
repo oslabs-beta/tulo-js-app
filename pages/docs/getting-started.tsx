@@ -5,8 +5,8 @@ import DocsContent from '../../components/docs/DocsContent';
 import DocsSidebar from '../../components/docs/DocsSidebar';
 import DocsHeading from '../../components/docs/DocsHeading';
 import DocsTextBlock from '../../components/docs/DocsTextBlock';
-import CodeSnippet from '../../components/docs/CodeSnippet';
 import DocsNextPrev from '../../components/docs/DocsNextPrev';
+import AnchorLink from '../../components/docs/AnchorLink';
 
 const GettingStarted = () => {
   return (
@@ -20,17 +20,31 @@ const GettingStarted = () => {
           <DocsContent>
             <DocsHeading>Getting started</DocsHeading>
             <DocsTextBlock>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
+              Welcome to tulo.js! Using the{' '}
+              <AnchorLink
+                href='https://www.npmjs.com/package/tulo-js'
+                target='_blank'
+              >
+                tulo-js npm package
+              </AnchorLink>
+              , you can add a service worker and implement caching strategies to
+              make your website fast and reliable, even when users are offline.
             </DocsTextBlock>
-            <CodeSnippet>yolo</CodeSnippet>
             <DocsTextBlock>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse
-              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-              cupidatat non proident, sunt in culpa qui officia deserunt mollit
-              anim id est laborum.
+              This documentation outlines the steps required to configure
+              caching strategies for different files in your project (markup,
+              stylesheets, images, fonts, etc.) based on your business needs.
+            </DocsTextBlock>
+            <DocsTextBlock>
+              After following the instructions to set up the tulo-js library in
+              your project, you can optionally sign in to monitor caching
+              activity here on the tulo.js dashboard (the Monitor documentation
+              section walks through this step).
+            </DocsTextBlock>
+            <DocsTextBlock>
+              The dashboard retrieves metrics from your deployed website for
+              each resource/file including average load times, resource size,
+              and user connection types (e.g. 4G, 2G, Offline).
             </DocsTextBlock>
             <DocsNextPrev
               prev={null}

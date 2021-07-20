@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import Layout from '../../components/Layout';
 import DocsWrapper from '../../components/docs/DocsWrapper';
 import DocsContent from '../../components/docs/DocsContent';
@@ -7,6 +8,7 @@ import DocsHeading from '../../components/docs/DocsHeading';
 import DocsTextBlock from '../../components/docs/DocsTextBlock';
 import CodeSnippet from '../../components/docs/CodeSnippet';
 import DocsNextPrev from '../../components/docs/DocsNextPrev';
+import AnchorLink from '../../components/docs/AnchorLink';
 
 const Monitor = () => {
   return (
@@ -23,17 +25,24 @@ const Monitor = () => {
           <DocsContent>
             <DocsHeading>Monitor</DocsHeading>
             <DocsTextBlock>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
+              <Link href='/signin' passHref>
+                <AnchorLink>Sign in</AnchorLink>
+              </Link>{' '}
+              to the{' '}
+              <Link href='/dashboard' passHref>
+                <AnchorLink>tulo.js dashboard</AnchorLink>
+              </Link>{' '}
+              to monitor your caching strategies in production. You&apos;ll be
+              able to view the caching strategies you implemented on a per
+              resource basis, including statistics on cache events and your
+              users.
             </DocsTextBlock>
-            <CodeSnippet>yolo</CodeSnippet>
             <DocsTextBlock>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse
-              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-              cupidatat non proident, sunt in culpa qui officia deserunt mollit
-              anim id est laborum.
+              For example, what percentage of the time is your site&apos;s logo
+              image being fetched from the cache versus the network? What is the
+              difference in average load time when it is fetched from the cache
+              versus the network? What percentage of your users are accessing
+              your cached pages when their connection is offline?
             </DocsTextBlock>
             <DocsNextPrev
               prev='Add a service worker'
