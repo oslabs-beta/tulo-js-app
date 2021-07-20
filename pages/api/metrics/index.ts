@@ -20,6 +20,9 @@ export default async function postMetricsHandler(
   // connect to database
   await dbConnectNew();
 
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
   if (req.method === 'POST') {
     const origin = req.headers.origin;
     const metricsQueue = req.body;
