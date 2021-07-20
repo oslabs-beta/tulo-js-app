@@ -21,9 +21,9 @@ const Install = () => {
             <DocsHeading>Installation</DocsHeading>
             <DocsTextBlock>
               Navigate to the root of your project in the terminal and enter the
-              command below.
+              command below to install the tulo-js npm package.
             </DocsTextBlock>
-            <CodeSnippet>npm install tulojs</CodeSnippet>
+            <CodeSnippet terminal={true}>npm install tulo-js</CodeSnippet>
             <DocsTextBlock>
               Once you have the tulo.js npm package installed, head over to the
               next section to add a service worker.

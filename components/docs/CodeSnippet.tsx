@@ -2,12 +2,21 @@ import React from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../styles/constants';
 
-// TODO: add copy to clipboard functionality
-const CodeSnippet = ({ children }: { children: React.ReactNode }) => {
-  return <Wrapper>{children}</Wrapper>;
+type CodeSnippetProps = {
+  terminal: boolean;
+  children: React.ReactNode;
 };
 
-const Wrapper = styled.article`
+// TODO: add copy to clipboard functionality
+const CodeSnippet = ({ terminal, children }: CodeSnippetProps) => {
+  return (
+    <Wrapper terminal={terminal}>
+      <code>{children}</code>
+    </Wrapper>
+  );
+};
+
+const Wrapper = styled.article<{ terminal: boolean }>`
   margin: 24px 0;
   padding: 16px;
   border-radius: 8px;
@@ -16,7 +25,7 @@ const Wrapper = styled.article`
   font-size: 1rem;
 
   &::before {
-    content: '>> ';
+    content: '${(p) => (p.terminal ? '>> ' : '')}';
   }
 `;
 

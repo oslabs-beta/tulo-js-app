@@ -6,7 +6,7 @@ const DocsTextBlock = ({ children }: { children: React.ReactNode }) => {
 };
 
 const Paragraph = styled.p`
-  margin-top: 24px;
+  margin: 24px 0;
 `;
 
 export default DocsTextBlock;

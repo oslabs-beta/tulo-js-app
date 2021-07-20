@@ -47,6 +47,11 @@ const Nav = styled.a`
   text-align: center;
   border: 2px solid ${COLORS.orangePrimary};
   border-radius: 8px;
+
+  &:hover {
+    border: 2px solid ${COLORS.offWhite};
+    box-shadow: 0 0 8px ${COLORS.orangePrimary};
+  }
 `;
 
 const Next = styled(Nav)`
