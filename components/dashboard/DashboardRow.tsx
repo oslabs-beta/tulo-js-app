@@ -94,12 +94,14 @@ const StrategyDetails = styled.details<StrategyDetailsProps>`
   padding-left: 24px;
   padding-top: 16px;
   color: ${(p) => (p.current ? COLORS.orangePrimary : COLORS.darkGrey)};
+  font-weight: ${(p) => (p.current ? 600 : 400)};
 `;
 
 const CacheConnectionDetails = styled.details`
   padding-left: 24px;
   padding-top: 16px;
   color: ${COLORS.purplePrimary};
+  font-weight: 400;
 `;
 
 const CacheConnectionEvent = styled.p`
