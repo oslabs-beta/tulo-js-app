@@ -53,5 +53,7 @@ export default async function postMetricsHandler(
         .status(500)
         .send('Error sending metrics to tulojs.com API endpoint.');
     }
+  } else if(req.method === 'OPTIONS'){
+    return res.status(200).end();
   }
 }
