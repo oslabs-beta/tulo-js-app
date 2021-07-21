@@ -37,6 +37,12 @@ async function postMetricsHandler(req: NextApiRequest, res: NextApiResponse) {
   // connect to database
   await dbConnectNew();
 
+  if (req.method === 'GET') {
+    return res
+      .status(200)
+      .send('GET request successful to tulojs.com/api/metrics');
+  }
+
   if (req.method === 'POST') {
     const origin = req.headers.origin;
     const metricsQueue = req.body;
