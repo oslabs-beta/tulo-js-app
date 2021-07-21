@@ -201,7 +201,11 @@ const DashboardBox = () => {
         resources.map((resourceObj, index) => (
           <DashboardRow
             resourceObj={resourceObj}
-            currentStrategy={currentStrategies[resourceObj.url].strategy}
+            currentStrategy={
+              currentStrategies[resourceObj.url]
+                ? currentStrategies[resourceObj.url].strategy
+                : 'NoStrategy'
+            }
             key={index}
           />
         ))}
