@@ -1,15 +1,15 @@
 // Next.js API route docs: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 // Next.js API middleware docs: https://nextjs.org/docs/api-routes/api-middlewares
-import Cors from 'cors';
-import runMiddleware from '../../../utils/middleware';
+// import Cors from 'cors';
+// import runMiddleware from '../../../utils/middleware';
 import { dbConnectNew } from '../../../utils/dbConnect';
 import Metric from '../../../models/Metric';
 
 // Initializing the cors middleware
-const cors = Cors({
-  methods: ['POST', 'OPTIONS'],
-});
+// const cors = Cors({
+//   methods: ['POST', 'OPTIONS'],
+// });
 
 const allowCors =
   (fn: Function) => async (req: NextApiRequest, res: NextApiResponse) => {
@@ -24,6 +24,7 @@ const allowCors =
       'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
     );
     if (req.method === 'OPTIONS') {
+      console.log('OPTIONS clause executing...');
       res.status(200).end();
       return;
     }
@@ -32,13 +33,10 @@ const allowCors =
 
 async function postMetricsHandler(req: NextApiRequest, res: NextApiResponse) {
   // run cors middleware
-  await runMiddleware(req, res, cors);
+  // await runMiddleware(req, res, cors);
   // connect to database
   await dbConnectNew();
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
   if (req.method === 'POST') {
     const origin = req.headers.origin;
     const metricsQueue = req.body;
@@ -56,6 +54,7 @@ async function postMetricsHandler(req: NextApiRequest, res: NextApiResponse) {
           device,
           timestamp,
         } = metrics;
+
         let resourceDoc = await Metric.create({
           origin,
           url,
