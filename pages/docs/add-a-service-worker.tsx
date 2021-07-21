@@ -31,8 +31,9 @@ const AddServiceWorker = () => {
             <DocsTextBlock>
               If you are using Express to serve your front-end, create an
               endpoint to respond to GET requests to{' '}
-              <InlineCode>/tulo</InlineCode> that sends{' '}
-              <InlineCode>node_modules/tulo-js/tulo.js</InlineCode> as a
+              <InlineCode>/tulo</InlineCode> that sends the relative path to the
+              package in node_modules, e.g.{' '}
+              <InlineCode>../node_modules/tulo-js/tulo.js</InlineCode> as a
               response. Otherwise, adjust your import statement in the next step
               (see below).
             </DocsTextBlock>
@@ -42,7 +43,7 @@ const AddServiceWorker = () => {
             </DocsTextBlock>
             <pre>
               <CodeSnippet terminal={false}>
-                {`// Use the below import statement if you set up an Express endpoint\nimport { cacheGenerator } from '/tulo';\n// Otherwise, import the library from node_modules\nimport { cacheGenerator } from 'node_modules/tulo-js/tulo.js';`}
+                {`// Use the below import statement if you set up an Express endpoint\nimport { cacheGenerator } from '/tulo';\n// Otherwise, import the library from node_modules\nimport { cacheGenerator } from '../node_modules/tulo-js/tulo.js';`}
               </CodeSnippet>
             </pre>
             <DocsTextBlock>
@@ -111,7 +112,7 @@ const AddServiceWorker = () => {
             </DocsTextBlock>
             <pre>
               <CodeSnippet terminal={false}>
-                {`const imageCacheSpec = {\n  name: 'imageCache' + version,\n  types: ['image/png'],\n  urls: ['/logo.png', '/icon.png', 'banner.png'],\n  strategy: 'CacheFirst',\n  expiration: 60*60*1000\n};`}
+                {`const imageCacheSpec = {\n  name: 'imageCache' + version,\n  types: ['image'],\n  urls: ['/logo.png', '/icon.png', 'banner.png'],\n  strategy: 'CacheFirst',\n  expiration: 60*60*1000\n};`}
               </CodeSnippet>
             </pre>
             <DocsTextBlock>
