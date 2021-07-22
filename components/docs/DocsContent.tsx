@@ -6,11 +6,12 @@ const DocsContent = ({ children }: { children: React.ReactNode }) => {
 };
 
 const Wrapper = styled.div`
-  flex-basis: 70%;
-  padding-right: 100px;
+  flex-basis: 100%;
+  width: 100%;
 
-  @media (max-width: 768px) {
-    flex-basis: 100%;
+  @media (min-width: 992px) {
+    flex-basis: 70%;
+    padding-right: 100px;
   }
 `;
 

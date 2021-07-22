@@ -39,7 +39,7 @@ const Sidebar = styled.aside`
   top: 116px;
   align-self: flex-start;
 
-  @media (max-width: 768px) {
+  @media (max-width: 992px) {
     display: none;
   }
 `;

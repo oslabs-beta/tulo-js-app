@@ -33,12 +33,19 @@ const DocsNextPrev = ({ prev, prevRef, next, nextRef }: NextPrevProps) => {
 
 const Wrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
   padding-top: 48px;
+
+  @media (min-width: 1000px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 `;
 
 const Nav = styled.a`
+  width: 100%;
+  margin-bottom: 16px;
   padding: 16px 24px;
   font-size: 1rem;
   font-weight: 600;
@@ -51,6 +58,11 @@ const Nav = styled.a`
   &:hover {
     border: 2px solid ${COLORS.offWhite};
     box-shadow: 0 0 8px ${COLORS.orangePrimary};
+  }
+
+  @media (min-width: 1000px) {
+    width: max-content;
+    margin-bottom: 0;
   }
 `;
 
