@@ -8,6 +8,7 @@ import DocsTextBlock from '../../components/docs/DocsTextBlock';
 import CodeSnippet from '../../components/docs/CodeSnippet';
 import InlineCode from '../../components/docs/InlineCode';
 import DocsNextPrev from '../../components/docs/DocsNextPrev';
+import AnchorLink from '../../components/docs/AnchorLink';
 
 const AddServiceWorker = () => {
   return (
@@ -31,8 +32,9 @@ const AddServiceWorker = () => {
             <DocsTextBlock>
               If you are using Express to serve your front-end, create an
               endpoint to respond to GET requests to{' '}
-              <InlineCode>/tulo</InlineCode> that sends{' '}
-              <InlineCode>node_modules/tulo-js/tulo.js</InlineCode> as a
+              <InlineCode>/tulo</InlineCode> that sends the relative path to the
+              package in node_modules, e.g.{' '}
+              <InlineCode>../node_modules/tulo-js/tulo.js</InlineCode> as a
               response. Otherwise, adjust your import statement in the next step
               (see below).
             </DocsTextBlock>
@@ -42,9 +44,22 @@ const AddServiceWorker = () => {
             </DocsTextBlock>
             <pre>
               <CodeSnippet terminal={false}>
-                {`// Use the below import statement if you set up an Express endpoint\nimport { cacheGenerator } from '/tulo';\n// Otherwise, import the library from node_modules\nimport { cacheGenerator } from 'node_modules/tulo-js/tulo.js';`}
+                {`// Use the below import statement if you set up an Express endpoint\nimport { cacheGenerator } from '/tulo';\n// Otherwise, import the library from node_modules\nimport { cacheGenerator } from '../node_modules/tulo-js/tulo.js';`}
               </CodeSnippet>
             </pre>
+            <DocsTextBlock>
+              If you are having trouble importing tulo-js from node_modules, run
+              the command below in your terminal from the root directory to copy
+              the library functionality into your client-side code. To learn
+              more about service worker imports, check out{' '}
+              <AnchorLink href='https://web.dev/es-modules-in-sw/'>
+                Jeff Posnick&apos;s article on limitations of ES Module imports
+                in service workers
+              </AnchorLink>{' '}
+            </DocsTextBlock>
+            <CodeSnippet terminal={true}>
+              cp ./node_modules/tulo-js/tulo.js ./public
+            </CodeSnippet>
             <DocsTextBlock>
               Add a version number to <InlineCode>service-worker.js</InlineCode>
               . Remember to update this version number whenever you make updates
@@ -111,7 +126,7 @@ const AddServiceWorker = () => {
             </DocsTextBlock>
             <pre>
               <CodeSnippet terminal={false}>
-                {`const imageCacheSpec = {\n  name: 'imageCache' + version,\n  types: ['image/png'],\n  urls: ['/logo.png', '/icon.png', 'banner.png'],\n  strategy: 'CacheFirst',\n  expiration: 60*60*1000\n};`}
+                {`const imageCacheSpec = {\n  name: 'imageCache' + version,\n  types: ['image'],\n  urls: ['/logo.png', '/icon.png', 'banner.png'],\n  strategy: 'CacheFirst',\n  expiration: 60*60*1000\n};`}
               </CodeSnippet>
             </pre>
             <DocsTextBlock>

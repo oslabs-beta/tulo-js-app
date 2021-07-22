@@ -21,16 +21,10 @@ const Home = () => {
       <Layout>
         <Main>
           <ImageWrapper>
-            <Image
-              src={gearLogo}
-              alt='tulo.js gear logo'
-              width={400}
-              height={400}
-            />
+            <Image src={gearLogo} alt='tulo.js gear logo' layout='fill' />
             <ImageShadow />
           </ImageWrapper>
-          <Spacer size={100} />
-          <div>
+          <LandingWrapper>
             <LandingTulo>tulo.js</LandingTulo>
             <LandingHeading>
               Making service workers easy so that your app is{' '}
@@ -39,7 +33,7 @@ const Home = () => {
             <Link href='/docs' passHref>
               <DocsAnchor>Read the docs &rarr;</DocsAnchor>
             </Link>
-          </div>
+          </LandingWrapper>
         </Main>
       </Layout>
     </>
@@ -51,10 +45,32 @@ const Main = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+
+  @media (min-width: 992px) {
+    flex-direction: row;
+  }
 `;
 
 const ImageWrapper = styled.div`
-  flex-shrink: 0;
+  /* display: none; */
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 24px;
+
+  @media (min-width: 992px) {
+    margin-bottom: 0;
+    display: block;
+    flex-shrink: 0;
+    width: 300px;
+    height: 300px;
+  }
+
+  @media (min-width: 1200px) {
+    width: 400px;
+    height: 400px;
+  }
 `;
 
 const ImageShadow = styled.div`
@@ -63,19 +79,38 @@ const ImageShadow = styled.div`
   box-shadow: 0 48px 36px ${COLORS.darkGrey};
 `;
 
+const LandingWrapper = styled.div`
+  text-align: center;
+
+  @media (min-width: 992px) {
+    margin-left: 100px;
+    text-align: left;
+  }
+`;
+
 const LandingTulo = styled.h1`
-  font-size: 5rem;
+  font-size: 4rem;
   margin-bottom: 24px;
+
+  @media (min-width: 992px) {
+    font-size: 5rem;
+  }
 `;
 
 const LandingHeading = styled.h2`
+  padding: 0 36px;
   margin-bottom: 36px;
-  font-size: 2.5rem;
+  font-size: 1.75rem;
   font-weight: 200;
   font-style: italic;
 
   & > strong {
     color: ${COLORS.tealPrimary};
+  }
+
+  @media (min-width: 768px) {
+    padding: 0;
+    font-size: 2.5rem;
   }
 `;
 

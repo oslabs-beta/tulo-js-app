@@ -14,7 +14,7 @@ const Wrapper = styled.footer`
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 0 8px ${COLORS.purplePrimary};
+  box-shadow: 0 0 8px ${COLORS.grey};
 `;
 
 const FooterText = styled.p`

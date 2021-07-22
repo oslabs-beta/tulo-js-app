@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { signOut, useSession } from 'next-auth/client';
@@ -8,11 +8,19 @@ import { PRODUCTION_URL } from '../utils/constants';
 import logo from '../public/images/logo-teal.png';
 import githubLogo from '../public/images/github-logo.png';
 import npmLogo from '../public/images/npm-logo.png';
+import menuIcon from '../public/images/menu-icon.svg';
 import styled from 'styled-components';
 import { COLORS } from '../styles/constants';
 import Spacer from './Spacer';
+import MobileMenu from './MobileMenu';
 
 const Header = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleMenuButtonClick = () => {
+    setMobileMenuOpen(true);
+  };
+
   const [session, loading] = useSession();
   const dispatch = useDispatch();
 
@@ -36,7 +44,22 @@ const Header = () => {
 
   return (
     <Wrapper>
-      <NavBar>
+      <MobileNavBar>
+        <Link href='/' passHref>
+          <ImageMenuAnchor>
+            <Image src={logo} alt='tulo.js logo' width={100} height={39} />
+          </ImageMenuAnchor>
+        </Link>
+        <MenuIconButton onClick={handleMenuButtonClick}>
+          <Image
+            src={menuIcon}
+            alt='menu hamburger icon'
+            width={30}
+            height={30}
+          />
+        </MenuIconButton>
+      </MobileNavBar>
+      <DesktopNavBar>
         <Link href='/' passHref>
           <ImageLinkWrapper>
             <Image src={logo} alt='tulo.js logo' width={100} height={39} />
@@ -72,7 +95,11 @@ const Header = () => {
             <NavLinkWrapper>Sign in</NavLinkWrapper>
           </Link>
         )}
-      </NavBar>
+      </DesktopNavBar>
+      <MobileMenu
+        mobileMenuOpen={mobileMenuOpen}
+        setMobileMenuOpen={(bool: boolean) => setMobileMenuOpen(bool)}
+      />
     </Wrapper>
   );
 };
@@ -81,6 +108,8 @@ const Wrapper = styled.header`
   position: sticky;
   top: 0;
   left: 0;
+  isolation: isolate;
+  z-index: 1;
   padding: 0 24px;
   display: flex;
   justify-content: center;
@@ -89,10 +118,42 @@ const Wrapper = styled.header`
   box-shadow: 0 0 8px ${COLORS.tealPrimary};
 `;
 
-const NavBar = styled.nav`
+const MobileNavBar = styled.nav`
   width: 100%;
   display: flex;
+  justify-content: space-between;
   align-items: center;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
+
+const ImageMenuAnchor = styled.a`
+  display: flex;
+  align-items: center;
+`;
+
+const MenuIconButton = styled.button`
+  display: flex;
+  align-items: center;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const DesktopNavBar = styled.nav`
+  display: none;
+
+  @media (min-width: 768px) {
+    display: flex;
+    width: 100%;
+    align-items: center;
+  }
 `;
 
 const ImageLinkWrapper = styled.a`
